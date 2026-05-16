@@ -1,0 +1,464 @@
+PROJECT SETUP AND THEME INITIALIZATION
+====================================
+
+This document describes, step by step, everything that has been done
+from the initial project creation up to testing the ThemeProvider
+in a Next.js application.
+
+--------------------------------------------------
+STEP 0 - DEVELOPMENT ENVIRONMENT SETUP
+--------------------------------------------------
+
+Before creating or running the project, several configuration files
+were added to enforce coding style consistency and automate formatting
+and linting upon file save.
+
+These files are:
+
+1. .editorconfig
+2. .prettierrc.yml
+3. .vscode/settings.json
+
+Each file's purpose and content are described below.
+
+--------------------------------------------------
+(0.1) .editorconfig — Universal Coding Style
+--------------------------------------------------
+
+This file defines base editor rules such as indentation, line endings,
+and character encoding. It ensures consistency across IDEs.
+
+File path: /.editorconfig
+
+Content:
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 2
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+#### my code ####
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 2
+end_of_line = lf
+insert_final_newline = true
+
+
+
+Purpose:
+- Universal settings for all contributors regardless of IDE
+- 2-space indentation standard
+- Automatically removes trailing spaces
+- Normalizes line endings (LF)
+
+--------------------------------------------------
+(0.2) .prettierrc.yml — Code Formatter Rules
+--------------------------------------------------
+
+This file defines Prettier style rules for consistent code formatting
+in all JavaScript and JSX files upon save.
+
+File path: /.prettierrc.yml
+
+Content:
+semi: true
+singleQuote: true
+trailingComma: es5
+tabWidth: 2
+jsxSingleQuote: false
+printWidth: 80
+bracketSpacing: true
+arrowParens: avoid
+
+#### my code ####
+# .prettierrc or .prettierrc.yaml
+semi: false
+singleQuote: true
+trailingComma: "es5"
+tabWidth: 2
+
+
+
+Purpose:
+- Enforce prettier formatting rules on every save
+- Keep clean, readable code
+- Works in combination with ESLint for real-time correction
+
+--------------------------------------------------
+(0.3) .vscode/settings.json — Editor Integration
+--------------------------------------------------
+
+VS Code settings were added to automatically trigger formatting
+and linting when a file is saved.
+
+File path: /.vscode/settings.json
+
+Content:
+{
+  “editor.formatOnSave”: true,
+  “editor.defaultFormatter”: “esbenp.prettier-vscode”,
+  “eslint.alwaysShowStatus”: true,
+  “eslint.format.enable”: true,
+  “eslint.run”: “onType”,
+  “eslint.validate”: [“javascript”, “javascriptreact”],
+  “files.autoSave”: “onWindowChange”
+}
+
+#### my code ####
+{
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true,
+        "source.fixAll.eslint": true
+    },
+    "editor.formatOnSave": true
+}
+
+
+Purpose:
+- Automatically formats files on save
+- ESLint runs instantly while typing
+- Keeps the codebase clean and bug-free
+- Tightens integration between VSCode and project linting tools
+
+--------------------------------------------------
+(0.4) Installed Development Dependencies
+--------------------------------------------------
+
+To make ESLint and Prettier work together smoothly,
+the following packages were installed:
+
+Command lines used:
+npm install --save-dev eslint prettier eslint-config-prettier eslint-plugin-prettier
+
+This setup allows Prettier to handle formatting,
+while ESLint checks code logic and syntax.
+
+--------------------------------------------------
+(0.5) Configure ESLint for Prettier Integration
+--------------------------------------------------
+
+File path: /eslint.config.mjs
+
+Content:
+```javascript
+import prettierConfig from "eslint-config-prettier";
+
+export default [
+  {
+    ignores: ["node_modules", ".next"],
+    languageOptions: {
+      globals: { window: true, document: true }
+  },
+    plugins: {
+      prettier: prettierConfig
+      },
+    rules: {
+      "prettier/prettier": "error"
+    }
+  }
+];
+
+#### my code ####
+import { defineConfig, globalIgnores } from 'eslint/config'
+import nextVitals from 'eslint-config-next/core-web-vitals'
+import prettierConfig from 'eslint-config-prettier'
+import prettierPlugin from 'eslint-plugin-prettier'
+
+const eslintConfig = defineConfig([
+  ...nextVitals,
+
+  // --- ADD THIS BLOCK ---
+  {
+    plugins: {
+      prettier: prettierPlugin,
+    },
+    rules: {
+      'prettier/prettier': 'error', // Prettier runs as an ESLint rule
+    },
+  },
+  prettierConfig,
+  // --- END OF NEW BLOCK ---
+
+  // Override default ignores of eslint-config-next.
+  globalIgnores([
+    // Default ignores of eslint-config-next:
+    '.next/**',
+    'out/**',
+    'build/**',
+    'next-env.d.ts',
+  ]),
+])
+
+export default eslintConfig
+
+
+
+
+Purpose:
+  Disable ESLint stylistic rules that conflict with Prettier
+  Trigger linting errors whenever code breaks Prettier style
+  Provide uniform behavior for all saved files
+
+Result:
+After setup, the development environment offers:
+  Auto-formatting on save
+  Active linting while editing files
+  Consistent style rules across all team members
+  A clean foundation before coding begins
+
+
+
+--------------------------------------------------
+STEP 1 - Create the Next.js Project
+--------------------------------------------------
+
+The project was created using Next.js with the App Router enabled.
+
+Command used:
+
+npx create-next-app@latest react-advanced
+
+During setup:
+- JavaScript was selected (no TypeScript)
+- App Router was enabled
+- ESLint was enabled
+- Tailwind was NOT used
+- src/ directory structure was enabled
+
+This resulted in a clean Next.js project using the App Router.
+
+--------------------------------------------------
+STEP 2 - Project Folder Organization
+--------------------------------------------------
+
+After project creation, the folder structure was organized manually
+to follow a clean and scalable architecture.
+
+Key folders created:
+
+- src/app        -> Application routes (App Router)
+- src/components-> Reusable UI and layout components
+- src/data      -> Mock data (products)
+- src/styles    -> Theme and global styles
+- public/images -> Static image assets
+- docs          -> Project documentation
+
+This separation ensures better maintainability and scalability.
+src
+├── app
+│   ├── about
+│   ├── contact
+│   ├── products
+│   │   └── [id]
+│   ├── layout.js
+│   └── page.js
+│
+├── components
+│   ├── layout
+│   ├── product
+│   └── ui
+│
+├── data
+│   └── products.js
+│
+├── docs
+│
+└── styles
+    └── theme.js
+
+--------------------------------------------------
+STEP 3 - App Router Pages Setup
+--------------------------------------------------
+
+The following routes were created using the App Router convention:
+
+- /             -> Home page
+- /about        -> About page
+- /contact      -> Contact page
+- /products     -> Product listing page
+- /products/[id]-> Product details page (dynamic route)
+
+Each route is represented by a folder containing a page.js file.
+
+--------------------------------------------------
+STEP 4 - Installing styled-components
+--------------------------------------------------
+
+To implement CSS-in-JS, styled-components was selected.
+
+Installed packages:
+
+npm install styled-components
+npm install --save-dev babel-plugin-styled-components
+
+styled-components allows component-scoped styles and theming.
+
+--------------------------------------------------
+STEP 5 - Creating the Theme System
+--------------------------------------------------
+first install normalize.css :
+npm install normalize.css
+
+A theme system was created in:
+
+src/styles/theme.js
+// src\styles\theme.js
+import { createGlobalStyle } from 'styled-components'
+import 'normalize.css'
+
+export const theme = {
+  colors: {
+    primary: '#0070f3',
+    secondary: '#1A1A1A',
+    accent: '#ff8800',
+    background: '#fff',
+    text: '#333',
+  },
+  font: {
+    family: "'Inter', sans-serif",
+    sizes: {
+      small: '0.9rem',
+      base: '1rem',
+      large: '1.3rem',
+      xl: '2rem',
+    },
+    weight: {
+      normal: 400,
+      bold: 600,
+    },
+  },
+  spacing: {
+    xs: '4px',
+    sm: '8px',
+    md: '16px',
+    lg: '24px',
+    xl: '40px',
+  },
+  breakpoints: {
+    mobile: '480px',
+    tablet: '768px',
+    desktop: '1024px',
+  },
+}
+
+export const GlobalStyle = createGlobalStyle`
+  /* RESET + BASE STYLE */
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    font-family: ${(props) => props.theme.font.family};
+    background-color: ${(props) => props.theme.colors.background};
+    color: ${(props) => props.theme.colors.text};
+    font-size: ${(props) => props.theme.font.sizes.base};
+    line-height: 1.6;
+  }
+
+  a {
+    color: ${(props) => props.theme.colors.primary};
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  a:hover {
+    color: ${(props) => props.theme.colors.accent};
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
+  }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    outline: none;
+  }
+
+  ul {
+    list-style: none;
+  }
+`
+
+
+The theme includes:
+- Color palette
+- Font family and font sizes
+- Spacing scale
+- Responsive breakpoints
+
+A GlobalStyle was also created using createGlobalStyle to:
+- Reset default browser styles
+- Normalize layout behavior
+- Apply base typography and colors globally
+
+--------------------------------------------------
+STEP 6 - Connecting ThemeProvider to the App
+--------------------------------------------------
+
+The ThemeProvider was applied globally inside:
+
+src/app/layout.js
+'use client'
+import { ThemeProvider } from 'styled-components'
+import { GlobalStyle, theme } from '../styles/theme'
+import Navbar from '../components/layout/Navbar'
+import Footer from '../components/layout/Footer'
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="fa" dir="rtl">
+      <body>
+        <ThemeProvider theme={theme}>
+          <GlobalStyle />
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </ThemeProvider>
+      </body>
+    </html>
+  )
+}
+
+
+This ensures that all components and pages
+have access to the theme object.
+
+GlobalStyle was also injected at this level
+to apply global CSS rules to the entire application.
+
+--------------------------------------------------
+STEP 7 - Testing the ThemeProvider
+--------------------------------------------------
+
+A temporary test component was created using styled-components
+to verify that:
+
+- Theme colors are accessible
+- Font sizes from the theme are applied
+- Spacing values work correctly
+- Global styles are active
+
+The test was rendered on the /about page.
+
+Successful visual output confirmed that:
+- ThemeProvider is correctly configured
+- styled-components is working properly
+- GlobalStyle is applied globally
+
+After confirmation, the test component was removed
+to keep the project clean.
+
+--------------------------------------------------
+END OF DOCUMENT
+--------------------------------------------------
