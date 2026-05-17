@@ -4,11 +4,11 @@ import 'normalize.css'
 
 export const theme = {
   colors: {
-    primary: '#0070f3',
-    secondary: '#1A1A1A',
+    primary: '#6900f3',
+    secondary: '#ccc',
     accent: '#ff8800',
-    background: '#fff',
-    text: '#333',
+    background: '#111',
+    text: '#eee',
   },
   font: {
     family: "'Inter', sans-serif",
@@ -35,9 +35,48 @@ export const theme = {
     tablet: '768px',
     desktop: '1024px',
   },
+  radius: {
+    xs: '4px',
+    sm: '8px',
+    md: '16px',
+    lg: '24px',
+    xl: '40px',
+  },
 }
 
 export const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'Vazirmatn';
+    src: url('/fonts/vazirmatn-arabic-300-normal.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Vazirmatn';
+    src: url('/fonts/vazirmatn-arabic-400-normal.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Vazirmatn';
+    src: url('/fonts/vazirmatn-arabic-500-normal.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Vazirmatn';
+    src: url('/fonts/vazirmatn-arabic-700-normal.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
   /* RESET + BASE STYLE */
   *, *::before, *::after {
     box-sizing: border-box;
@@ -46,7 +85,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   html, body {
-    font-family: ${(props) => props.theme.font.family};
+    font-family: 'Vazirmatn';
     background-color: ${(props) => props.theme.colors.background};
     color: ${(props) => props.theme.colors.text};
     font-size: ${(props) => props.theme.font.sizes.base};
@@ -57,6 +96,10 @@ export const GlobalStyle = createGlobalStyle`
     color: ${(props) => props.theme.colors.primary};
     text-decoration: none;
     transition: color 0.3s ease;
+  }
+  
+  p {
+    color: ${(props) => props.theme.colors.primary};
   }
 
   a:hover {

@@ -1,0 +1,306 @@
+STEP 8 - Layout Structure with Navbar and Footer
+To create a consistent layout across the entire application,
+
+a global layout structure was implemented using the App Router.
+
+File location:
+src/app/layout.js
+
+This file wraps all pages and provides shared UI elements.
+
+Main responsibilities of the layout:
+• Apply the ThemeProvider globally
+• Inject GlobalStyle
+• Render the Navbar component
+• Render the Footer component
+• Render page content between them
+
+Code structure:
+ThemeProvider wraps the whole application
+GlobalStyle applies global CSS reset and base styles
+Navbar appears at the top of every page
+Footer appears at the bottom of every page
+children represents the active route content
+Result:
+
+Every route automatically receives:
+• Navbar
+• Footer
+• Global theme access
+• Global styling
+
+This eliminates the need to import layout components
+
+inside each individual page.
+
+STEP 9 - Home Page Implementation
+The main homepage was implemented in:
+
+src/app/page.js
+
+This page acts as the landing page of the store.
+
+Main sections implemented:
+
+Store introduction
+Category navigation
+Featured products
+Product listing preview
+Categories were defined as a simple array:
+
+Example structure:
+
+{
+slug: “electronics”,
+title: “الکترونیک”
+}
+
+These categories are rendered dynamically using map()
+
+and link to the shop page with query parameters.
+
+Example URL generated:
+
+/shop?category=electronics
+
+STEP 10 - Centralized Product Data
+Instead of hardcoding product data inside pages,
+
+all product information was moved into a dedicated data module.
+
+File location:
+src/data/products.js
+
+This improves maintainability and allows reuse across multiple components.
+
+Each product object includes:
+• id
+• slug
+• title
+• price
+• compareAtPrice
+• inStock
+• rating
+• reviewsCount
+• category
+• tags
+• image
+• shortDescription
+
+Example structure:
+{
+id: 1,
+slug: “wireless-headphones-x2”,
+title: “هدفون بی‌سیم مدل X2”,
+price: 1899000,
+image: “/products/headphones.webp”
+}
+
+Benefits of this approach:
+• Cleaner page components
+• Easier product management
+• Reusable data source for multiple pages
+
+STEP 11 - Featured Products Logic
+The homepage includes a “featured products” section.
+
+Instead of manually selecting products,
+
+the logic filters products based on their tags.
+
+Implementation example:
+products.filter(product => product.tags.includes(“featured”))
+
+This approach allows any product to become featured
+
+simply by adding the tag “featured” inside the product data.
+
+Advantages:
+• No UI changes required
+• Data-driven feature control
+• Scalable for larger product catalogs
+
+STEP 12 - Next.js Image Optimization
+Product images are rendered using the Next.js Image component.
+
+Import:
+
+import Image from “next/image”
+
+Example usage:
+<Image
+src={product.image}
+alt={product.title}
+width={200}
+height={200}
+/>
+
+Benefits of using next/image:
+• Automatic image optimization
+• Lazy loading
+• Responsive resizing
+• Improved performance
+
+STEP 13 - Products Page
+A dedicated products listing page was implemented.
+
+File location:
+src/app/products/page.js
+
+Instead of writing product layout directly in the page,
+
+a reusable component called ProductList was created.
+
+Component location:
+src/components/product/ProductList.js
+
+Responsibilities of ProductList:
+• Import product data
+• Render a grid layout
+• Map through products
+• Render ProductCard for each item
+
+STEP 14 - ProductCard Component
+Each product is displayed using a reusable ProductCard component.
+
+File location:
+
+src/components/product/ProductCard.js
+
+Responsibilities:
+• Display product image
+• Show product title
+• Show product price
+• Provide link to product detail page
+
+Component structure:
+
+ProductCard receives a product object as props
+
+and destructures:
+id
+title
+price
+image
+
+This component is styled using styled-components
+
+inside:
+
+ProductCard.styles.js
+
+STEP 15 - Dynamic Product Detail Page
+A dynamic route was implemented to display individual products.
+
+Route structure:
+
+src/app/products/[id]/page.js
+
+The page uses the Next.js hook:
+
+useParams()
+
+Example:
+const { id } = useParams()
+
+The product is then retrieved from the product list:
+products.find(p => p.id === parseInt(id))
+
+If the product does not exist,
+
+a fallback message is displayed.
+
+This dynamic routing approach allows scalable URLs such as:
+/products/1
+/products/2
+/products/3
+
+STEP 16 - Product Detail UI
+The product detail page contains:
+• Breadcrumb navigation
+• Product image
+• Product title
+• Product price
+• Product description
+• Add-to-cart button
+
+The UI layout is implemented using styled-components
+
+in:
+ProductDetailPage.styles.js
+
+Main styled components include:
+DetailContainer
+MainSection
+ImageWrapper
+ContentWrapper
+Title
+Price
+CartButton
+
+STEP 17 - Navbar Component
+The Navbar component provides main navigation for the application.
+
+Location:
+src/components/layout/Navbar/
+
+Features:
+• Logo linking to homepage
+• Navigation links
+• Cart icon with item counter
+
+Navigation links include:
+• Home
+• Shop
+• About
+• Contact
+
+The Navbar is styled using styled-components
+
+inside Navbar.styles.js.
+
+The component is included globally in layout.js.
+
+STEP 18 - Footer Component
+A responsive footer component was implemented.
+
+Location:
+src/components/layout/Footer/
+
+Main sections inside the footer:
+• Brand / logo
+• Account links
+• Company information
+• Resource links
+• Social media icons
+• Legal links
+
+Icons are implemented using react-icons.
+
+Example icons:
+FaFacebookF
+FaTwitter
+FaGithub
+FaGoogle
+
+The layout uses a responsive CSS grid
+
+to adapt to tablet and mobile screens.
+
+END OF DOCUMENT (Current Progress)
+
+The project now includes:
+• Global theme system
+• Responsive layout
+• Navigation system
+• Product listing
+• Product detail pages
+• Reusable UI components
+• Structured project architecture
+
+The next steps will include:
+• Shopping cart state management
+• Product filtering and search
+• API integration
+• Authentication system
+• Checkout workflow

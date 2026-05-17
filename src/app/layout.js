@@ -1,8 +1,9 @@
+// src\app\layout.js
 'use client'
 import { ThemeProvider } from 'styled-components'
 import { GlobalStyle, theme } from '../styles/theme'
-import Navbar from '../components/layout/Navbar'
-import Footer from '../components/layout/Footer'
+import Navbar from '../components/layout/Navbar/Navbar'
+import Footer from '../components/layout/Footer/Footer'
 
 export default function RootLayout({ children }) {
   return (
