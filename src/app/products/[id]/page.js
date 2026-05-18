@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useParams } from 'next/navigation'
 import { products } from '@/data/products'
 import Image from 'next/image'
-
+import * as T from '@/components/ui/Typography'
 import {
   DetailContainer,
   MainSection,
@@ -27,7 +27,7 @@ export default function ProductDetailPage() {
   if (!product) {
     return (
       <div style={{ padding: '5rem', textAlign: 'center' }}>
-        <h1>محصول پیدا نشد!</h1>
+        <T.H1>محصول پیدا نشد!</T.H1>
       </div>
     )
   }
@@ -60,10 +60,10 @@ export default function ProductDetailPage() {
           <Title>{product.title}</Title>
           <Price>{product.price.toLocaleString()} تومان</Price>
 
-          <p style={{ color: '#666', lineHeight: '1.8' }}>
+          <T.P>
             تجربه‌ای متفاوت با {product.name}. این محصول با بالاترین کیفیت ساخت
             و طراحی ارگونومیک، همراهی هوشمند برای لحظات شماست.
-          </p>
+          </T.P>
 
           <ActionContainer>
             <CartButton $active={inCart} onClick={handleToggleCart}>

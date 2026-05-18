@@ -1,10 +1,11 @@
 // src\app\products\page.js
+import * as T from '@/components/ui/Typography'
 import ProductList from '../../components/ProductList/ProductList'
 
 const ProductsPage = () => {
   return (
     <main>
-      <h1>محصولات</h1>
+      <T.H1>محصولات</T.H1>
 
       <ProductList />
     </main>

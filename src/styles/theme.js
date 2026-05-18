@@ -9,6 +9,8 @@ export const theme = {
     accent: '#ff8800',
     background: '#111',
     text: '#eee',
+    textSecondary: '#ccc',
+    mutedText: '#888',
   },
   font: {
     family: "'Inter', sans-serif",
@@ -99,7 +101,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   
   p {
-    color: ${(props) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.textSecondary};
   }
 
   a:hover {

@@ -1,20 +1,25 @@
 // src\app\layout.js
-'use client'
-import { ThemeProvider } from 'styled-components'
-import { GlobalStyle, theme } from '../styles/theme'
+import Providers from '@/components/layout/Providers'
 import Navbar from '../components/layout/Navbar/Navbar'
 import Footer from '../components/layout/Footer/Footer'
+
+export const metadata = {
+  title: {
+    template: '%s | فروشگاه Shop',
+    default: 'فروشگاه Shop | خرید آنلاین',
+  },
+  description: 'بهترین فروشگاه تمرینی با Next.js',
+}
 
 export default function RootLayout({ children }) {
   return (
     <html lang="fa" dir="rtl">
       <body>
-        <ThemeProvider theme={theme}>
-          <GlobalStyle />
+        <Providers>
           <Navbar />
           <main>{children}</main>
           <Footer />
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   )

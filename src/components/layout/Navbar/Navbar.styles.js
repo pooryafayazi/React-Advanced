@@ -25,10 +25,6 @@ export const Logo = styled(Link)`
 export const NavLinks = styled.div`
   display: flex;
   gap: 1rem;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    display: none; // در موبایل فعلاً مخفی می‌کنیم تا پیچیده نشود
-  }
 `
 
 export const StyledLink = styled(Link)`
