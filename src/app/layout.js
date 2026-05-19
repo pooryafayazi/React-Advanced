@@ -9,6 +9,10 @@ export const metadata = {
     default: 'فروشگاه Shop | خرید آنلاین',
   },
   description: 'بهترین فروشگاه تمرینی با Next.js',
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+  },
 }
 
 export default function RootLayout({ children }) {
