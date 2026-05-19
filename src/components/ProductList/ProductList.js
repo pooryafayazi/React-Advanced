@@ -1,4 +1,4 @@
-// src\components\product\ProductList.js
+// src\components\ProductList\ProductList.js
 'use client'
 
 import ProductCard from '../ProductCard/ProductCard'

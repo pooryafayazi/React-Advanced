@@ -44,6 +44,10 @@ export const theme = {
     lg: '24px',
     xl: '40px',
   },
+  spaces: ['0px', '2px', '4px', '8px', '16px', '32px'],
+  boxShadow: {
+    light: '0 4px 16px rgba(0,1,31,0.2)',
+  },
 }
 
 export const GlobalStyle = createGlobalStyle`
@@ -91,7 +95,7 @@ export const GlobalStyle = createGlobalStyle`
     background-color: ${(props) => props.theme.colors.background};
     color: ${(props) => props.theme.colors.text};
     font-size: ${(props) => props.theme.font.sizes.base};
-    line-height: 1.6;
+    line-height: 1;
   }
 
   a {

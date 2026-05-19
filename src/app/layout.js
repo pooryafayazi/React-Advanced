@@ -1,7 +1,7 @@
 // src\app\layout.js
-import Providers from '@/components/layout/Providers'
-import Navbar from '../components/layout/Navbar/Navbar'
-import Footer from '../components/layout/Footer/Footer'
+import Providers from '@/components/Layout/Providers'
+import Navbar from '../components/Layout/Navbar/Navbar'
+import Footer from '../components/Layout/Footer/Footer'
 
 export const metadata = {
   title: {

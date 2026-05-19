@@ -1,5 +1,5 @@
 // src\app\contact\page.js
-import ContactForm from '@/components/forms/ContactForm'
+import ContactForm from '@/components/Forms/ContactForm'
 import * as T from '@/components/ui/Typography'
 
 export const metadata = {

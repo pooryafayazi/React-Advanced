@@ -1,4 +1,4 @@
-// src\components\product\ProductCard.js
+// src\components\ProductCard\ProductCard.js
 'use client'
 
 import Link from 'next/link'

@@ -1,4 +1,4 @@
-// src\components\product\ProductList.js
+// src\components\ProductList\ProductList.styles.js
 import styled from 'styled-components'
 
 export const Grid = styled.div`

@@ -41,5 +41,5 @@ export const Muted = styled.p`
 `
 export const B = styled.b`
   font-weight: 600;
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.textSecondary};
 `

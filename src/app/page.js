@@ -2,8 +2,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import * as T from '@/components/ui/Typography'
-import HeroSection from '@/components/home/HeroSection'
-import HomeBackground from '@/components/home/HomeBackground'
+import HeroSection from '@/components/Home/HeroSection'
+import HomeBackground from '@/components/Home/HomeBackground'
 
 import { products } from '../data/products'
 

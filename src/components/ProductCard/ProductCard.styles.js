@@ -26,12 +26,20 @@ export const ImageWrapper = styled.div`
 
 export const Image = styled.img`
   width: 100%;
+  height: 100%;
   object-fit: cover;
+  display: block;
 `
 
 export const Content = styled.div`
   padding: ${({ theme }) => theme.spacing.md};
   background-color: rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+
+  align-items: center; /* وسط‌چین افقی */
+  justify-content: center; /*   عمودی  وسط  */
+  text-align: center; /* برای متن/inline */
 `
 
 export const Title = styled.h3`
@@ -44,13 +52,13 @@ export const Title = styled.h3`
 export const Price = styled.p`
   font-size: ${({ theme }) => theme.font.sizes.base};
   font-weight: ${({ theme }) => theme.font.weight.bold};
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.textSecondary};
   margin-bottom: ${({ theme }) => theme.spacing.sm};
 `
 
 export const DetailsLink = styled.span`
   font-size: ${({ theme }) => theme.font.sizes.small};
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.textSecondary};
   cursor: pointer;
 
   &:hover {

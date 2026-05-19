@@ -42,3 +42,6 @@ next-env.d.ts
 
 
 /public/hero/hero[1-4].png
+
+*storybook.log
+storybook-static

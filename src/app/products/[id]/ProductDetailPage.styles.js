@@ -74,7 +74,7 @@ export const ContentWrapper = styled.div`
 export const Title = styled.h1`
   font-size: ${({ theme }) => theme.font.sizes.xxl};
   font-weight: ${({ theme }) => theme.font.bold};
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.textSecondary};
 `
 
 export const Price = styled.p`
