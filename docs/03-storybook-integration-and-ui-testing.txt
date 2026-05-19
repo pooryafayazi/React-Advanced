@@ -1,0 +1,291 @@
+docs/03-storybook-integration-and-ui-testing.txt
+STORYBOOK INTEGRATION AND UI TESTING
+=====================================
+
+This document explains step-by-step the entire process of installing, configuring, and customizing Storybook for a Next.js (App Router) project using styled-components and the existing ThemeProvider.
+
+It continues from the end of document version 02.
+
+STEP 19 — INSTALLING STORYBOOK
+Storybook was installed to provide an isolated environment for developing, previewing, and testing UI components without running the full Next.js application.
+
+Command used:
+bash
+npx storybook@latest init
+During setup, when prompted:
+
+Framework automatically detected as Next.js
+TypeScript: ❌ (JavaScript chosen)
+Add Playwright for testing: ✅ Yes (recommended)
+Add example stories: ✅ Yes
+After installation, two new folders were created:
+
+text
+.storybook/
+stories/
+and a new npm script was automatically added:
+
+json
+"storybook": "storybook dev -p 6006"
+STEP 20 — INITIAL VERIFICATION
+Running Storybook for the first time:
+
+bash
+npm run storybook
+Result:
+
+Local dev server available at http://localhost:6006
+Default Next.js sample components displayed correctly
+Confirmed that Storybook environment works with the App Router
+STEP 21 — CLEANUP AND PROJECT INTEGRATION
+Unneeded default example stories were removed to maintain a clean structure.
+
+Deleted files:
+
+text
+stories/Button.jsx
+stories/Header.jsx
+stories/Page.jsx
+Storybook configuration files remained under:
+
+text
+.storybook/main.js
+.storybook/preview.js
+STEP 22 — ADDING STYLED-COMPONENTS SUPPORT
+To ensure Storybook handles styled-components correctly, the babel plugin and related settings were confirmed and adjusted.
+
+Installed packages:
+bash
+npm install --save-dev babel-plugin-styled-components
+The plugin ensures proper class name generation and Server-Side Rendering (SSR) compatibility.
+
+STEP 23 — INTEGRATING THE THEME PROVIDER
+When rendering components such as Button, Input, or Typography inside Storybook, styled-components attempted to access theme.colors but failed with:
+
+text
+TypeError: Cannot read properties of undefined (reading 'colors')
+Root Cause:
+Storybook stories were rendered without being wrapped by the ThemeProvider.
+
+STEP 24 — FIX WITH GLOBAL DECORATOR
+The fix was implemented via a decorator in .storybook/preview.js, which wraps all stories with the same ThemeProvider and GlobalStyle used in the Next.js app.
+
+Final code:
+javascript
+// .storybook/preview.js
+
+import { ThemeProvider } from 'styled-components';
+import { theme, GlobalStyle } from '../src/styles/theme';
+
+const preview = {
+  decorators: [
+    (Story) => (
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <Story />
+      </ThemeProvider>
+    ),
+  ],
+  parameters: {
+    controls: { expanded: true },
+    actions: { argTypesRegex: '^on[A-Z].*' },
+  },
+};
+
+export default preview;
+✅ Now all components properly receive the theme context.
+
+STEP 25 — VERIFYING THE THEME CONNECTION
+A visual test was done using the Typography component inside Storybook.
+
+Component path:
+
+text
+src/components/ui/Typography/Typography.js
+This component accessed theme.colors using styled-components.
+
+To ensure it worked inside Storybook, 'use client' was added at the top of the file (because it uses React hooks and ThemeProvider context).
+
+Result:
+
+Typography rendered with correct theme colors and fonts inside Storybook.
+
+STEP 26 — BUILDING PRODUCTION-GRADE STORIES
+After confirming proper styling, professional stories were implemented for all key UI components.
+
+Each story uses args + controls for live prop editing.
+
+Example: Button.stories.js
+js
+import Button from './Button'
+
+export default {
+  title: 'UI/Button',
+  component: Button,
+  args: {
+    children: 'Button',
+    variant: 'solid',
+    size: 'md',
+    disabled: false,
+  },
+  argTypes: {
+    variant: { control: 'select', options: ['solid', 'outline', 'ghost'] },
+    size: { control: 'select', options: ['sm', 'md', 'lg'] },
+  },
+}
+
+export const Solid = {}
+export const Outline = { args: { variant: 'outline' } }
+export const Disabled = { args: { disabled: true } }
+This setup allowed developers to:
+
+Edit props dynamically from the Storybook UI
+Preview size, variant, and state changes instantly
+Ensure visual consistency across all components
+STEP 27 — ADDING STORIES FOR INPUT, TEXTAREA, AND TYPOGRAPHY
+Each core input component received its own stories with control panels.
+
+Examples:
+
+Input.stories.js
+Controls for placeholder, disabled, size
+Stories for focused/disabled/normal states
+Textarea.stories.js
+Controls for text content and disable state
+Typography.stories.js
+Stories for Headings, Paragraph, Muted text variants
+Uses theme font sizes and colors
+Purpose:
+
+✅ Establish component-level visual documentation
+
+✅ Ensure cross-component theme consistency
+
+STEP 28 — ADDING DECORATOR FOR PRODUCT CARD
+When testing the ProductCard component, the Storybook view appeared too large, filling the entire canvas.
+
+This was because ProductCard is designed to sit inside a grid container (ProductList), not as a full-page component.
+
+Fix:
+A container decorator was added to simulate the layout constraint.
+
+
+نمایش کد
+
+
+// src/components/product/ProductCard/ProductCard.stories.js
+
+import ProductCard from './ProductCard'
+
+export default {
+  title: 'Product/ProductCard',
+  component: ProductCard,
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: '320px', margin: '0 auto' }}>
+        <Story />
+      </div>
+    ),
+  ],
+}
+
+const mockProduct = {
+  id: 1,
+  title: 'MacBook Pro M3',
+  price: '120000000',
+  image: '/images/headphones.webp',
+}
+
+export const Default = {
+  args: { product: mockProduct },
+}
+Result:
+
+✅ The card displayed in realistic dimensions
+
+✅ Correct bottom spacing and hover effects
+
+✅ Product image rendering properly inside grid constraints
+
+STEP 29 — STORYBOOK THEME VALIDATION
+Color, typography, and spacing values from the global theme were verified in multiple stories.
+
+Key verifications:
+
+theme.colors.primary reflected correctly (e.g., blue buttons)
+theme.font.sizes used consistently in Typography components
+theme.spacing behaves predictably across Button, Input, and Card
+Confirmed that ThemeProvider works consistently both in Next.js runtime and Storybook sandbox.
+
+STEP 30 — PLAYWRIGHT INSTALLATION FOR VISUAL TESTING
+When prompted:
+
+text
+💬 Do you want to install Playwright with Chromium now?
+Answer given: ✅ Yes
+
+Purpose:
+
+Enables Storybook’s Visual Regression and Interaction Testing
+Useful for automated UI tests and CI/CD workflows later
+STEP 31 — ORGANIZING STORYBOOK STRUCTURE
+All stories were grouped inside component-specific folders, following the same structure as main components.
+
+Example structure:
+
+text
+src/components/ui/Button/Button.js
+src/components/ui/Button/Button.stories.js
+src/components/ui/Input/Input.stories.js
+src/components/product/ProductCard/ProductCard.stories.js
+Benefits:
+
+✅ Consistent folder organization
+
+✅ Storybook can auto-discover files without explicit import
+
+✅ Easy co-location of UI + stories + styles
+
+STEP 32 — STORYBOOK VIEW IMPROVEMENT AND FIXES
+Two styling adjustments improved the rendering experience:
+
+Added:
+js
+   display: block;
+   height: 100%;
+   object-fit: cover;
+to the Image styled-component
+
+→ Prevented stretched or misaligned product images
+
+Added centered layout to ProductCard Content:
+js
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   text-align: center;
+→ Fixed alignment of “مشاهده جزئیات” and ensured visually balanced layout
+
+STEP 33 — PLANNED NEXT ADDITIONS
+After confirming complete Storybook integration, next steps planned include:
+
+Building stories for ProductList, Navbar, and Footer
+Adding responsive preview capabilities (mobile/tablet/desktop)
+Enabling dark mode switching in Storybook UI
+Setting up addon-interactions and addon-essentials testing suite
+RESULT SUMMARY
+✅ Storybook successfully installed and configured
+
+✅ ThemeProvider and GlobalStyle fully integrated
+
+✅ styled-components context verified
+
+✅ Stories added for all core UI elements
+
+✅ ProductCard properly constrained and theme-aligned
+
+✅ Playwright visual testing support enabled
+
+✅ Foundation ready for UI documentation and regression tests
+
+END OF DOCUMENT (v3)

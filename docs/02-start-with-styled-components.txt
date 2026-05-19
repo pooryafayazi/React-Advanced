@@ -1,3 +1,5 @@
+02-start-with-styled-components
+====================================
 STEP 8 - Layout Structure with Navbar and Footer
 To create a consistent layout across the entire application,
 
