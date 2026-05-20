@@ -1,0 +1,96 @@
+docs/04-redux-and-cart-implementation.txt
+REDUX INTEGRATION AND CART WORKFLOW
+====================================
+
+This document describes the implementation of the Shopping Cart system, Redux Toolkit integration, state persistence, and the resolution of complex SSR/Hydration challenges encountered during the checkout flow.
+
+It continues from the end of document version 03.
+
+STEP 34 — INSTALLING REDUX AND DEPENDENCIES
+To handle global state (Cart and Delivery Info), Redux Toolkit and Redux Persist were selected.
+
+Command used:
+
+bash
+
+npm install @reduxjs/toolkit react-redux redux-persist
+
+Purpose:
+
+@reduxjs/toolkit: Standard state management logic
+react-redux: Integration between React and Redux
+redux-persist: Maintaining cart state across page refreshes
+STEP 35 — REDUX STORE CONFIGURATION
+The store was configured with redux-persist to ensure the cart remains in localStorage.
+
+File path: src/lib/store/store.js
+
+Implementation:
+
+combineReducers for root reducer management
+persistReducer to handle the ‘cart’ slice
+serializableCheck: false in middleware to avoid warnings caused by non-serializable actions from redux-persist
+STEP 36 — CART SLICE CREATION
+A specialized Cart slice was created to handle product management.
+
+File path: src/lib/store/cartSlice.js
+
+Features:
+
+addToCart: Adds products, incrementing quantity if already present.
+removeFromCart: Removes a specific product item.
+updateQuantity: Increases or decreases item counts.
+clearCart: Wipes cart state after successful checkout.
+setDeliveryInfo: Stores user shipping details.
+STEP 37 — REDUX PROVIDER AND PERSIST GATE
+To avoid “Hydration Mismatch” (Server vs Client render), PersistGate was configured with a LoadingWrapper.
+
+File path: src/lib/store/ReduxProvider.js
+
+Logic:
+
+useMemo is used to instantiate store and persistor.
+The PersistGate uses a LoadingWrapper component to ensure the UI only renders after the state is hydrated from localStorage.
+This step was crucial to eliminate the flickering of cart contents on initial page load.
+STEP 38 — UI COMPONENTS AND STYLED-COMPONENTS FIXES
+During the integration, we encountered Hydration Mismatch errors. Investigation revealed two primary sources:
+
+1. Transient Props Issue: styled-components were passing standard HTML attributes (like size or variant) to the DOM.
+
+Fix: Applied the $ prefix to props (e.g., $size, $variant). This informs styled-components to use the prop for styling while excluding it from the final HTML element attributes.
+
+2. Root Layout Configuration:
+Ensured ReduxProvider wraps the content inside layout.js without injecting client-only code that causes mismatches.
+STEP 39 — CHECKOUT FLOW IMPLEMENTATION
+The user flow for purchasing was fully implemented:
+
+1. Cart Page:
+Dynamic list rendering.
+Real-time line-total calculation (Price * Quantity).
+totalPrice formatting with toLocaleString().
+Navigation button to /checkout/delivery.
+
+2. Delivery Info:
+Form state integrated with Redux deliveryInfo.
+
+3. Payment Page:
+Logic to handle checkout completion.
+Redirect handling to /cart if the cart is empty, ensuring a robust user experience.
+STEP 40 — FINAL UI/UX IMPROVEMENTS
+Cart Items: Added ItemImage styling for better visual feedback.
+Quantity Controls: Adjusted to column direction for better accessibility.
+Error Handling:
+Fixed Runtime ReferenceError: styled is not defined in PaymentForm.js.
+Corrected useEffect return values to prevent hydration errors.
+SUMMARY OF ACHIEVEMENTS
+✅ Global State Management with Redux Toolkit implemented.
+
+✅ Cart state persistence with localStorage (via redux-persist).
+
+✅ Resolved complex Hydration Mismatch issues using PersistGate and Transient Props.
+
+✅ Smooth Checkout Flow (Cart -> Delivery -> Payment).
+
+✅ Clean, modular code structure following scalable patterns.
+
+END OF DOCUMENT (v4)

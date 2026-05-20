@@ -8,7 +8,6 @@ export const H1 = styled.h1`
   line-height: 1.3;
   margin-bottom: 16px;
   color: ${({ theme }) => {
-    console.log('H1 theme in styled-component:', theme)
     return theme.colors.text
   }};
 `
@@ -24,6 +23,20 @@ export const H3 = styled.h3`
   font-size: 1.4rem;
   font-weight: 500;
   margin-bottom: 8px;
+  color: ${({ theme }) => theme.colors.text};
+`
+
+export const H4 = styled.h4`
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: ${({ theme }) => theme.colors.text};
+`
+
+export const H5 = styled.h5`
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 4px;
   color: ${({ theme }) => theme.colors.text};
 `
 

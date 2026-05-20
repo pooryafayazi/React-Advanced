@@ -65,3 +65,30 @@ export const DetailsLink = styled.span`
     color: ${({ theme }) => theme.colors.accent};
   }
 `
+export const CartActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+`
+
+export const SmallButton = styled.button`
+  padding: 0.2rem 0.6rem;
+  font-size: 0.8rem;
+  border-radius: 999px;
+  border: 1px solid ${({ theme }) => theme.colors.primary};
+  background: transparent;
+  color: ${({ theme }) => theme.colors.primary};
+  cursor: pointer;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primary};
+    color: #fff;
+  }
+`
+
+export const QtyValue = styled.span`
+  min-width: 20px;
+  text-align: center;
+  font-weight: ${({ theme }) => theme.font.weight.bold};
+`

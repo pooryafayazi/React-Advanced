@@ -110,3 +110,29 @@ export const CartButton = styled.button`
     color: ${({ $active }) => ($active ? '#ff4d4d' : '')};
   }
 `
+export const QuantityWrapper = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: ${({ theme }) => theme.spacing.sm};
+`
+
+export const QuantityButton = styled.button`
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid ${({ theme }) => theme.colors.primary};
+  background: transparent;
+  color: ${({ theme }) => theme.colors.primary};
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export const QuantityValue = styled.span`
+  min-width: 24px;
+  text-align: center;
+  font-weight: ${({ theme }) => theme.font.weight.bold};
+`

@@ -1,4 +1,4 @@
-// src\components\contact\ContactForm.js
+// src\components\Forms\ContactForm.js
 'use client'
 
 import { useForm } from '@/hooks/useForm'

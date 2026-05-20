@@ -5,7 +5,6 @@ import Link from 'next/link'
 export const HeroWrapper = styled.section`
   position: relative;
   min-height: 85vh;
-  background-image: url('/hero-contact.png');
   background-size: cover;
   background-position: center;
   overflow: hidden;

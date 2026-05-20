@@ -1,9 +1,15 @@
 // src\app\products\[id]\page.js
 'use client'
-import { useState } from 'react'
 import { useParams } from 'next/navigation'
-import { products } from '@/data/products'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  addToCart,
+  decrementQuantity,
+  removeFromCart,
+  selectItemQuantityById,
+} from '@/lib/store/features/cart/cartSlice'
 import Image from 'next/image'
+import { useGetProductByIdQuery } from '@/lib/store/services/productsApi'
 import * as T from '@/components/ui/Typography'
 import {
   DetailContainer,
@@ -16,25 +22,49 @@ import {
   BreadcrumbLink,
   ActionContainer,
   CartButton,
+  QuantityWrapper,
+  QuantityButton,
+  QuantityValue,
 } from './ProductDetailPage.styles'
 
 export default function ProductDetailPage() {
-  const [inCart, setInCart] = useState(false)
   const { id } = useParams()
+  const dispatch = useDispatch()
 
-  const product = products.find((p) => p.id === parseInt(id))
+  // 1. Get cart items from the Redux store (api slice state is automatically managed by RTK Query)
+  const {
+    data: product,
+    isLoading,
+    error,
+  } = useGetProductByIdQuery(id, {
+    skip: !id, // only fetch if ID is available
+    refetchOnMountOrArgChange: true, // refetch if ID changes (e.g. navigating to another product)
+  })
 
+  const quantity = useSelector(selectItemQuantityById(id))
+  const isInCart = quantity > 0
+
+  const handleAdd = () => {
+    if (!product) return
+    dispatch(addToCart(product))
+  }
+
+  const handleDecrement = () => {
+    dispatch(decrementQuantity(id))
+  }
+
+  const handleRemove = () => {
+    dispatch(removeFromCart(id))
+  }
+
+  if (isLoading) return <p>در حال بارگذاری محصول...</p>
+  if (error) return <p>خطا در بارگذاری محصول: {error.message}</p>
   if (!product) {
     return (
       <div style={{ padding: '5rem', textAlign: 'center' }}>
         <T.H1>محصول پیدا نشد!</T.H1>
       </div>
     )
-  }
-
-  const handleToggleCart = () => {
-    setInCart(!inCart)
-    // Context/Redux
   }
 
   return (
@@ -49,7 +79,7 @@ export default function ProductDetailPage() {
         <ImageWrapper>
           <Image
             src={product.image}
-            alt={product.name}
+            alt={product.title}
             fill
             priority // fast load
             style={{ objectFit: 'contain', padding: '20px' }}
@@ -61,14 +91,28 @@ export default function ProductDetailPage() {
           <Price>{product.price.toLocaleString()} تومان</Price>
 
           <T.P>
-            تجربه‌ای متفاوت با {product.name}. این محصول با بالاترین کیفیت ساخت
+            تجربه‌ای متفاوت با {product.title}. این محصول با بالاترین کیفیت ساخت
             و طراحی ارگونومیک، همراهی هوشمند برای لحظات شماست.
           </T.P>
 
           <ActionContainer>
-            <CartButton $active={inCart} onClick={handleToggleCart}>
-              {inCart ? '❌ حذف از سبد خرید' : '🛒 افزودن به سبد خرید'}
-            </CartButton>
+            {!isInCart ? (
+              <CartButton $active={false} onClick={handleAdd}>
+                🛒 افزودن به سبد خرید
+              </CartButton>
+            ) : (
+              <>
+                <QuantityWrapper>
+                  <QuantityButton onClick={handleDecrement}>−</QuantityButton>
+                  <QuantityValue>{quantity}</QuantityValue>
+                  <QuantityButton onClick={handleAdd}>+</QuantityButton>
+                </QuantityWrapper>
+
+                <CartButton $active={true} onClick={handleRemove}>
+                  ❌ حذف از سبد
+                </CartButton>
+              </>
+            )}
           </ActionContainer>
         </ContentWrapper>
       </MainSection>

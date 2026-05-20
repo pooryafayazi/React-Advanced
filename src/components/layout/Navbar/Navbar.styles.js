@@ -42,15 +42,39 @@ export const CartIcon = styled.div`
   position: relative;
   cursor: pointer;
   font-size: 1.2rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+
+  span {
+    font-size: 0.65rem;
+    color: ${({ theme }) => theme.colors.accent};
+  }
 `
 
 export const Badge = styled.span`
   position: absolute;
   top: -8px;
   right: -12px;
-  background-color: ${({ theme }) => theme.colors.secondary};
-  color: white;
+  background-color: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.accent};
   font-size: 0.7rem;
   padding: 2px 6px;
   border-radius: 50%;
+`
+export const CartButtonLink = styled(Link)`
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: #fff;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.primaryHover};
+  }
 `

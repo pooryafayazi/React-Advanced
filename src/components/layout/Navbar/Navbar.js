@@ -1,8 +1,10 @@
 // src\components\layout\Navbar\Navbar.js
 'use client'
 import Image from 'next/image'
-
 import React from 'react'
+import { useSelector } from 'react-redux'
+import Link from 'next/link'
+import { selectCartCount } from '@/lib/store/features/cart/cartSlice'
 import {
   Nav,
   Logo,
@@ -10,9 +12,11 @@ import {
   StyledLink,
   CartIcon,
   Badge,
+  CartButtonLink,
 } from './Navbar.styles'
 
 const Navbar = () => {
+  const cartCount = useSelector(selectCartCount)
   return (
     <Nav>
       <Logo href="/">
@@ -33,10 +37,15 @@ const Navbar = () => {
         <StyledLink href="/contact">تماس با ما</StyledLink>
       </NavLinks>
 
-      <CartIcon>
-        🛒
-        <Badge>۰</Badge>
-      </CartIcon>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <Link href="/cart">
+          <CartIcon>
+            🛒
+            {cartCount > 0 && <Badge>{cartCount}</Badge>}
+            <span>سبد خرید</span>
+          </CartIcon>
+        </Link>
+      </div>
     </Nav>
   )
 }
