@@ -14,7 +14,11 @@ const ProductList = () => {
   }
 
   if (error) {
-    return <p>خطا در بارگذاری محصولات: {error.message}</p>
+    return (
+      <p data-testid="error-message">
+        خطا در بارگذاری محصولات: {error.message}
+      </p>
+    )
   }
 
   return (

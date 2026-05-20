@@ -49,7 +49,7 @@ const Cart = () => {
         const lineTotal = item.price * item.quantity
 
         return (
-          <CartItem key={item.id}>
+          <CartItem key={item.id} data-testid="cart-item">
             <ItemImage src={item.image} alt={item.title} />
 
             <ItemInfo>
@@ -71,7 +71,10 @@ const Cart = () => {
               <LineTotal>{lineTotal.toLocaleString()} تومان</LineTotal>
             </QuantityControls>
 
-            <RemoveBtn onClick={() => dispatch(removeFromCart(item.id))}>
+            <RemoveBtn
+              data-testid="remove-button"
+              onClick={() => dispatch(removeFromCart(item.id))}
+            >
               حذف
             </RemoveBtn>
           </CartItem>
@@ -81,7 +84,10 @@ const Cart = () => {
       <Total>مجموع سبد: {totalPrice.toLocaleString()} تومان</Total>
 
       <Link href="/checkout/delivery">
-        <Button style={{ marginTop: '20px', width: '100%' }}>
+        <Button
+          data-testid="go-to-delivery-btn"
+          style={{ marginTop: '20px', width: '100%' }}
+        >
           ادامه به مرحله ارسال
         </Button>
       </Link>

@@ -6,9 +6,9 @@ import styled from 'styled-components'
 const StyledInput = styled.input`
   width: 100%;
   padding: ${(props) =>
-    props.size === 'lg'
+    props.$size === 'lg'
       ? '14px 16px'
-      : props.size === 'sm'
+      : props.$size === 'sm'
         ? '8px 12px'
         : '10px 14px'};
   border-radius: ${(props) => props.theme.radius.sm};
@@ -17,9 +17,9 @@ const StyledInput = styled.input`
   color: ${(props) => props.theme.colors.text};
   font-family: ${(props) => props.theme.font.family};
   font-size: ${(props) =>
-    props.size === 'lg'
+    props.$size === 'lg'
       ? props.theme.font.sizes.large
-      : props.size === 'sm'
+      : props.$size === 'sm'
         ? props.theme.font.sizes.small
         : props.theme.font.sizes.base};
   transition: all 0.25s ease-in-out;

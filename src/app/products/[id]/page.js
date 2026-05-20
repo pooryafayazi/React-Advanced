@@ -98,7 +98,7 @@ export default function ProductDetailPage() {
           <ActionContainer>
             {!isInCart ? (
               <CartButton $active={false} onClick={handleAdd}>
-                🛒 افزودن به سبد خرید
+                🛒 افزودن به سبد
               </CartButton>
             ) : (
               <>

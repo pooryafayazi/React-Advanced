@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const productsApi = createApi({
   reducerPath: 'productsApi', // name of the slice in the store
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://6a0d7b4c769682b8ee764a71.mockapi.io/api/v1/',
+    baseUrl: process.env.NEXT_PUBLIC_PRODUCT_API_ABSOLUTE_URL, // base URL for the API, taken from environment variables
   }),
   endpoints: (builder) => ({
     // define an endpoint query for fetching products

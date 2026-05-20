@@ -32,18 +32,27 @@ export default function PaymentForm() {
     expiry: '',
   })
 
+  const [error, setError] = useState(null)
+
   const handlePayment = async (e) => {
     e.preventDefault()
     setLoading(true)
+    setError(null)
 
-    // simulate payment processing delay
-    setTimeout(() => {
-      setLoading(false)
-      // After successful payment, clear the cart and redirect to success page
+    try {
+      // simulate payment processing delay
+      const response = await fetch('/api/checkout', { method: 'POST' })
+
+      if (!response.ok) throw new Error('خطایی در پردازش پرداخت رخ داد')
+
+      // successful payment, clear cart and redirect to success page
       dispatch(clearCart())
-      // redirect to success page
       router.push('/checkout/success')
-    }, 2000)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -53,6 +62,7 @@ export default function PaymentForm() {
         placeholder="شماره کارت (۱۶ رقمی)"
         onChange={handleChange}
         required
+        data-testid="cardNumber-input"
       />
       <div style={{ display: 'flex', gap: '10px' }}>
         <Input
@@ -60,16 +70,29 @@ export default function PaymentForm() {
           placeholder="CVV2"
           onChange={handleChange}
           required
+          data-testid="cvv2-input"
         />
         <Input
           name="expiry"
           placeholder="تاریخ انقضا"
           onChange={handleChange}
           required
+          data-testid="expiry-input"
         />
       </div>
 
-      <Button type="submit" size="lg" disabled={loading}>
+      {error && (
+        <p data-testid="error-message" style={{ color: 'red' }}>
+          {error}
+        </p>
+      )}
+
+      <Button
+        type="submit"
+        size="lg"
+        disabled={loading}
+        data-testid="submit-payment-btn"
+      >
         {loading ? 'در حال اتصال به درگاه...' : 'پرداخت و تکمیل سفارش'}
       </Button>
     </FormContainer>

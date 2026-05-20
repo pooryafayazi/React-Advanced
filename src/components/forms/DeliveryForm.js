@@ -68,6 +68,7 @@ export default function DeliveryForm() {
           value={values.fullName}
           onChange={handleChange}
           required
+          data-testid="fullName-input"
         />
       </FormGroup>
 
@@ -78,6 +79,7 @@ export default function DeliveryForm() {
           value={values.phone}
           onChange={handleChange}
           required
+          data-testid="phone-input"
         />
       </FormGroup>
 
@@ -88,6 +90,7 @@ export default function DeliveryForm() {
           value={values.city}
           onChange={handleChange}
           required
+          data-testid="city-input"
         />
       </FormGroup>
 
@@ -98,6 +101,7 @@ export default function DeliveryForm() {
           value={values.address}
           onChange={handleChange}
           required
+          data-testid="address-input"
         />
       </FormGroup>
 
@@ -107,10 +111,11 @@ export default function DeliveryForm() {
           placeholder="کد پستی"
           value={values.postalCode}
           onChange={handleChange}
+          data-testid="postalCode-input"
         />
       </FormGroup>
 
-      <Button type="submit" size="lg">
+      <Button type="submit" size="lg" data-testid="submit-delivery-btn">
         ادامه به پرداخت
       </Button>
     </FormContainer>

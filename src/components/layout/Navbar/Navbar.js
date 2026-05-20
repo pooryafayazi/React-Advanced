@@ -41,7 +41,9 @@ const Navbar = () => {
         <Link href="/cart">
           <CartIcon>
             🛒
-            {cartCount > 0 && <Badge>{cartCount}</Badge>}
+            {cartCount > 0 && (
+              <Badge data-testid="cart-quantity">{cartCount}</Badge>
+            )}
             <span>سبد خرید</span>
           </CartIcon>
         </Link>

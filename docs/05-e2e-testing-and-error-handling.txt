@@ -1,0 +1,108 @@
+E2E TESTING AND ERROR HANDLING IMPLEMENTATION
+This document describes the implementation of End-to-End (E2E) testing using Playwright, the integration of API mocking, and the resolution of critical network error handling during the checkout flow.
+
+It continues from the end of document version 04.
+
+STEP 41 — INSTALLING AND CONFIGURING PLAYWRIGHT
+
+To establish a robust E2E testing environment, Playwright was installed and integrated into the Next.js project structure.
+
+Command used:
+
+npm install -D @playwright/test
+
+Structure created:
+
+e2e/: Root directory for all end-to-end test files.
+playwright.config.ts: Configuration file defining browser settings, base URL (http://localhost:3000), and test reporters.
+New scripts added to package.json:
+
+"test:e2e": "playwright test"
+"test:e2e:ui": "playwright test --ui"
+
+STEP 42 — INTEGRATION CHALLENGES & ENVIRONMENT
+
+To ensure tests could interact with the application, we utilized the webServer option in playwright.config.ts:
+// playwright.config.ts
+import { defineConfig, devices } from '@playwright/test'
+
+export default defineConfig({
+  testDir: './e2e',
+  fullyParallel: true,
+  reporter: 'html',
+  use: {
+    baseURL: 'http://localhost:3000',
+    trace: 'on-first-retry',
+  },
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+  ],
+
+  // automatically start your dev server before running the tests
+  webServer: {
+    command: 'npm run dev',
+    url: 'http://localhost:3000',
+    reuseExistingServer: !process.env.CI,
+  },
+})
+
+
+This ensures the Next.js development server is automatically started before running tests and terminated afterward.
+
+STEP 43 — NETWORK ERROR HANDLING (PAYMENT FORM REFACTORING)
+
+The PaymentForm was refactored to move beyond basic success scenarios and handle real-world API failures.
+
+File path: src/components/Forms/PaymentForm.js
+
+Features implemented:
+
+State Management: Introduced useState for loading and error states.
+API Resilience: Implemented try...catch block around the fetch call.
+Validation: Added check for response.ok to handle HTTP status codes (e.g., 500) that fetch doesn’t throw as exceptions by default.
+UI Feedback: Added data-testid="error-message" to enable robust testing of error visibility.
+
+STEP 44 — MOCKING API ENDPOINTS
+
+Because the project does not have a live backend for /api/checkout, we used Playwright’s network interception capability to simulate API responses.
+
+Implementation logic:
+
+javascript
+await page.route('**/api/checkout', (route) =>
+  route.fulfill({
+    status: 200, // Or 500 for error testing
+    contentType: 'application/json',
+    body: JSON.stringify({ success: true }),
+  })
+);
+This allowed us to force the application into specific states (Success/Failure) without actual backend dependencies.
+
+STEP 45 — RESOLVING ROUTE GUARDS AND REDIRECT LOGIC
+
+We encountered redirection failures in route-guards.spec.ts due to chain-redirection (Payment -> Delivery -> Cart).
+
+Challenge: The test expected a redirect to /checkout/delivery, but the app logic correctly redirected to /cart when the cart was empty.
+Fix: Updated test expectations to match the actual system behavior (/cart), ensuring the integrity of the auth/guard flow.
+STEP 45 — TEST SUITE CONSOLIDATION
+
+Finalized the test suite to ensure consistent results across all environments.
+
+Execution: Verified all 10 E2E tests pass.
+Optimization: Replaced CSS class selectors with data-testid for better maintainability (decoupling tests from styling changes).
+SUMMARY OF ACHIEVEMENTS
+
+✅ 10/10 E2E tests passing with Playwright.
+
+✅ Robust error handling implemented in PaymentForm using try/catch and response.ok checks.
+
+✅ API mocking strategy established for both success and server-error scenarios.
+
+✅ Verified Route Guard logic to prevent unauthorized checkout access.
+
+✅ Improved test stability by using data-testid and accurate redirection expectations.
+
+END OF DOCUMENT (v5)
