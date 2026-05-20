@@ -7,9 +7,18 @@ const createJestConfig = nextJest({
 })
 
 const config = {
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/.next/',
+    '__tests__/test-utils.jsx',
+    '__tests__/test-utils copy.jsx',
+    '/e2e/',
+  ],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  testMatch: ['**/__tests__/**/*.[jt]s?(x)'],
+  // testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
   coverageProvider: 'v8',
   testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
