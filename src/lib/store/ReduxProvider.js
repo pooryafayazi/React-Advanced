@@ -7,7 +7,6 @@ import { makePersistor } from './persistStore'
 import { PersistGate } from 'redux-persist/integration/react'
 import styled from 'styled-components'
 
-// safe component for SSR
 const LoadingWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -17,9 +16,6 @@ const LoadingWrapper = styled.div`
   font-size: 1.1rem;
   font-family: sans-serif;
 `
-// This component sets up the Redux Provider and PersistGate for the application.
-// It creates the Redux store and persistor instances,
-// and wraps the application with the necessary providers to enable state management and persistence across sessions.
 const store = makeStore()
 const persistor = makePersistor(store)
 

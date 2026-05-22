@@ -3,6 +3,7 @@ import Providers from '@/components/Layout/Providers'
 import Navbar from '../components/Layout/Navbar/Navbar'
 import Footer from '../components/Layout/Footer/Footer'
 import ReduxProvider from '@/lib/store/ReduxProvider'
+import AuthInitializer from '@/components/Auth/AuthInitializer'
 
 export const metadata = {
   title: {
@@ -21,11 +22,13 @@ export default function RootLayout({ children }) {
     <html lang="fa" dir="rtl">
       <body>
         <ReduxProvider>
-          <Providers>
-            <Navbar />
-            <main>{children}</main>
-            <Footer />
-          </Providers>
+          <AuthInitializer>
+            <Providers>
+              <Navbar />
+              <main>{children}</main>
+              <Footer />
+            </Providers>
+          </AuthInitializer>
         </ReduxProvider>
       </body>
     </html>
