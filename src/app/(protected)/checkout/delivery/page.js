@@ -1,5 +1,5 @@
 // src\app\checkout\delivery\page.js
-'use client' // This is a client component for the delivery information page in the checkout process.
+'use client'
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSelector } from 'react-redux'
@@ -12,7 +12,7 @@ export default function DeliveryPage() {
 
   useEffect(() => {
     if (items.length === 0) {
-      router.push('/cart') // redirect to cart if there are no items in the cart, ensuring that users cannot access the delivery page without having items to purchase.
+      router.push('/cart')
     }
   }, [items, router])
 

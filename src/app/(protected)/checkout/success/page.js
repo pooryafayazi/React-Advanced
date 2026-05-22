@@ -5,7 +5,6 @@ import { H1, P } from '@/components/ui/Typography'
 import Link from 'next/link'
 
 export default function SuccessPage() {
-  // this is Lazy state initialization for generating a random order ID "only once when the component mounts".
   const [orderId] = useState(() => Math.floor(Math.random() * 1000000))
 
   return (

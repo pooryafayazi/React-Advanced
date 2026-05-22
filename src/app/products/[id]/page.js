@@ -66,6 +66,7 @@ export default function ProductDetailPage() {
       </div>
     )
   }
+  if (!product || !product.image) return <p>تصویر محصول یافت نشد.</p>
 
   return (
     <DetailContainer>
@@ -79,7 +80,7 @@ export default function ProductDetailPage() {
         <ImageWrapper>
           <Image
             src={product.image}
-            alt={product.title}
+            alt={product.title || 'محصول'}
             fill
             priority // fast load
             style={{ objectFit: 'contain', padding: '20px' }}

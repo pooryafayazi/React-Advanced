@@ -1,36 +1,33 @@
-// src\components\Auth\LoginForm.jsx
+// src\components\Auth\RegisterForm.jsx
 'use client'
 import { useState } from 'react'
-import { useLoginMutation } from '@/lib/store/services/authApi'
-import { useDispatch } from 'react-redux'
-import { setUser } from '@/lib/store/features/auth/authSlice'
+import { useRegisterMutation } from '@/lib/store/services/authApi'
 import { useRouter } from 'next/navigation'
+import { useLoginMutation } from '@/lib/store/services/authApi'
 import Link from 'next/link'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 
-export default function LoginForm() {
+export default function RegisterForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [loginTrigger, loginResult] = useLoginMutation()
-  const dispatch = useDispatch()
+  const [name, setName] = useState('')
+
+  const [registerTrigger, registerResult] = useRegisterMutation()
+  const [loginTrigger] = useLoginMutation()
+
   const router = useRouter()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     try {
-      const result = await loginTrigger({
-        email,
-        password,
-      }).unwrap()
-
-      dispatch(setUser(result.user))
-
+      await registerTrigger({ email, password, name }).unwrap()
+      await loginTrigger({ email, password }).unwrap()
       router.push('/')
     } catch (error) {
-      console.error('Login error:', error)
-      alert(error.data?.message || 'Login failed')
+      console.error('Registration/Login error:', error)
+      alert(error.data?.message || 'ثبت‌نام با خطا مواجه شد')
     }
   }
 
@@ -39,6 +36,15 @@ export default function LoginForm() {
       onSubmit={handleSubmit}
       style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}
     >
+      <Input
+        type="text"
+        placeholder="نام و نام خانوادگی"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        size="lg"
+        required
+      />
+
       <Input
         type="email"
         placeholder="ایمیل"
@@ -57,8 +63,8 @@ export default function LoginForm() {
         required
       />
 
-      <Button type="submit" size="lg" disabled={loginResult.isLoading}>
-        {loginResult.isLoading ? 'در حال ورود...' : 'ورود'}
+      <Button type="submit" size="lg" disabled={registerResult.isLoading}>
+        {registerResult.isLoading ? 'در حال ثبت‌نام...' : 'ثبت‌نام'}
       </Button>
 
       <div
@@ -72,14 +78,14 @@ export default function LoginForm() {
         <Link href="/forgot-password" style={{ color: '#ccc' }}>
           فراموشی رمز عبور؟
         </Link>
-        <Link href="/register" style={{ color: '#6900f3', fontWeight: 'bold' }}>
-          ثبت‌نام کنید
+        <Link href="/login" style={{ color: '#6900f3', fontWeight: 'bold' }}>
+          ورود به حساب
         </Link>
       </div>
 
-      {loginResult.error && (
+      {registerResult.error && (
         <p style={{ color: 'red', fontSize: '14px', textAlign: 'center' }}>
-          {loginResult.error.data?.message ||
+          {registerResult.error.data?.message ||
             'مشکلی پیش آمده، دوباره تلاش کنید'}
         </p>
       )}

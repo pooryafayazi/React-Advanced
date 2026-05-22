@@ -7,16 +7,12 @@ import { H1, H2, P, B } from '@/components/ui/Typography'
 import PaymentForm from '@/components/Forms/PaymentForm'
 
 export default function PaymentPage() {
-  // useSelector is used to access the delivery information and cart items from the Redux store.
   const items = useSelector((state) => state.cart.items)
   const deliveryInfo = useSelector((state) => state.cart.deliveryInfo)
   const router = useRouter()
 
-  // useEffect is used to check if there are items in the cart when the component mounts.
-  // If the cart is empty, it redirects the user back to the checkout page.
   useEffect(() => {
     if (!deliveryInfo.fullName) {
-      // If the delivery information is missing, it redirects the user to the delivery information page.
       router.push('/checkout/delivery')
     }
   }, [items, deliveryInfo, router])

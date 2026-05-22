@@ -3,7 +3,11 @@
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useGetMeQuery } from '@/lib/store/services/authApi'
-import { setUser, logout } from '@/lib/store/features/auth/authSlice'
+import {
+  setUser,
+  logout,
+  setLoading,
+} from '@/lib/store/features/auth/authSlice'
 import AuthSkeleton from './AuthSkeleton'
 
 export default function AuthInitializer({ children }) {
@@ -19,6 +23,10 @@ export default function AuthInitializer({ children }) {
       dispatch(logout())
     }
   }, [data, isError, dispatch])
+
+  useEffect(() => {
+    dispatch(setLoading(isLoading))
+  }, [isLoading, dispatch])
 
   if (isLoading) {
     return <AuthSkeleton />

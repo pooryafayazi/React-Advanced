@@ -1,5 +1,7 @@
 // src\app\api\auth\login\route.jsx
 import { NextResponse } from 'next/server'
+import { readFile } from 'fs/promises'
+import path from 'path'
 import jwt from 'jsonwebtoken'
 
 export async function POST(request) {
@@ -9,21 +11,20 @@ export async function POST(request) {
 
     if (!email || !password) {
       return NextResponse.json(
-        { message: 'Email and password are required' },
+        { message: 'ایمیل و رمز عبور الزامی است' },
         { status: 400 }
       )
     }
 
-    const user = {
-      id: 1,
-      email: 'test@test.com',
-      name: 'Test User',
-      password: '123456',
-    }
+    const dbPath = path.join(process.cwd(), 'src', 'data', 'users.json')
+    const fileData = await readFile(dbPath, 'utf8')
+    const users = JSON.parse(fileData)
 
-    if (email !== user.email || password !== user.password) {
+    const user = users.find((u) => u.email === email && u.password === password)
+
+    if (!user) {
       return NextResponse.json(
-        { message: 'Invalid credentials' },
+        { message: 'اعتبارسنجی ناموفق بود' },
         { status: 401 }
       )
     }
