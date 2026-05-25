@@ -15,6 +15,7 @@ import {
   TrustBadges,
   Badge,
   Visual,
+  NewsButton,
 } from './HeroSection.styles'
 
 export default function HeroSection() {
@@ -37,6 +38,7 @@ export default function HeroSection() {
           </Description>
 
           <Actions>
+            <NewsButton href="/news">اخبار جهان</NewsButton>
             <PrimaryButton href="/products">خرید کنید</PrimaryButton>
 
             <SecondaryButton href="/about">درباره فروشگاه</SecondaryButton>

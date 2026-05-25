@@ -1,10 +1,11 @@
+// src\proxy.js
 import { NextResponse } from 'next/server'
 
-export function middleware(request) {
+export function proxy(request) {
   const path = request.nextUrl.pathname
   const token = request.cookies.get('accessToken')?.value
-
   const isAuthRoute = path.startsWith('/login') || path.startsWith('/register')
+
   const isProtectedRoute =
     path.startsWith('/checkout/delivery') ||
     path.startsWith('/checkout/payment') ||

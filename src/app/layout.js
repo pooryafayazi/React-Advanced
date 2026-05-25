@@ -5,6 +5,7 @@ import Footer from '../components/Layout/Footer/Footer'
 import ReduxProvider from '@/lib/store/ReduxProvider'
 import AuthInitializer from '@/components/Auth/AuthInitializer'
 import StyledComponentsRegistry from '@/lib/registry'
+import { ApolloWrapper } from '@/components/Layout/ApolloWrapper'
 
 export const metadata = {
   title: {
@@ -24,13 +25,15 @@ export default function RootLayout({ children }) {
       <body>
         <StyledComponentsRegistry>
           <ReduxProvider>
-            <AuthInitializer>
-              <Providers>
-                <Navbar />
-                <main>{children}</main>
-                <Footer />
-              </Providers>
-            </AuthInitializer>
+            <ApolloWrapper>
+              <AuthInitializer>
+                <Providers>
+                  <Navbar />
+                  <main>{children}</main>
+                  <Footer />
+                </Providers>
+              </AuthInitializer>
+            </ApolloWrapper>
           </ReduxProvider>
         </StyledComponentsRegistry>
       </body>

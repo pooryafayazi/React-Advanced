@@ -1,5 +1,5 @@
 // src\components\home\HeroSection.styles.js
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import Link from 'next/link'
 
 export const HeroWrapper = styled.section`
@@ -127,5 +127,56 @@ export const Visual = styled.div`
 
   @media (max-width: 900px) {
     height: 320px;
+  }
+`
+const pulse = keyframes`
+  0% {
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(212, 175, 55, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
+  }
+`
+export const NewsButton = styled(Link)`
+  /* استفاده از رنگ طلایی برای حاشیه جهت هماهنگی با تم */
+  border: 1px solid #d4af37;
+  color: #d4af37;
+  padding: 12px 28px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  background: rgba(212, 175, 55, 0.05);
+
+  /* اضافه کردن آیکون نقطه قرمز (Live) قبل از متن */
+  &::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background-color: #ff4d4d; /* رنگ قرمز برای حس خبری */
+    border-radius: 50%;
+    display: inline-block;
+    /* اعمال انیمیشن پالس روی این نقطه */
+    animation: ${pulse} 2s infinite;
+  }
+
+  &:hover {
+    background: #d4af37;
+    color: #111;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+
+    /* تغییر رنگ نقطه در حالت هاور برای خوانایی بهتر */
+    &::before {
+      background-color: #fff;
+    }
   }
 `
